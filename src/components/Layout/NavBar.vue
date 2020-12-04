@@ -38,9 +38,9 @@ export default {
 /*========================================*/
 .navbar {
 
-    background-color:#206b75;
+    background-color:rgb(147,221,255);
     width: 100%;
-    height: auto;
+    height: 10%;
     font-size: 30px;
     text-align: right;
     color: #ffffff;
