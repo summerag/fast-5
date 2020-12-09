@@ -36,8 +36,7 @@ export default {
 
 /*NAVBAR STYLES*/
 /*========================================*/
-/*NAVBAR STYLES*/
-/*========================================*/
+
 .navbar {
     display: flex;
     background-color:rgb(147,221,255);
