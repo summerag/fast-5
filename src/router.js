@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Home from './pages/Home.vue';
 import Teams from './pages/Teams.vue';
+import Players from './pages/Players.vue'
 import Schedule from './pages/Schedule.vue';
 import SignUp from './pages/SignUp.vue';
 import LogIn from './pages/LogIn.vue';
@@ -18,6 +19,11 @@ const router = createRouter({
             path: '/teams',
             name: 'teams',
             components: {default: Teams}
+        },
+        {
+            path: '/players',
+            name: 'players',
+            components: {default: Players}
         },
         {
             path: '/schedule',

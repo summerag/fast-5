@@ -1,6 +1,6 @@
 <template>
 <div>
-    <input type="checkbox" id="toggle" :checked="modelValue" @click="logChecked(!modelValue)">
+    <input type="checkbox" id="toggle" :checked="modelValue" @click="hamburgerChecked(!modelValue)">
     <label id="hamburger" for="toggle" >
         <div class="hamburger">
             <span class="bar bar1"></span>
@@ -17,7 +17,7 @@ export default {
     props: ['modelValue'],
     emits: ['update:modelValue'],
     methods: {
-        logChecked(option) {
+        hamburgerChecked(option) {
             this.$emit('update:modelValue', option)
         },
     },
