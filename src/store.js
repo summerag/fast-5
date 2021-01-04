@@ -9,11 +9,12 @@ const store = createStore({
     mutations: {
         formState(state, payload){
             state.formOpen = payload;
+            console.log(state)
         }
     },
     getters: {
         formStatus (state){
-            return state.formState;
+            return state.formOpen;
         }
     },
     actions: {

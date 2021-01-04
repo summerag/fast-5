@@ -1,13 +1,11 @@
 <template>
-    <div class="form-container" :class="modelValue ? 'show-form' : 'hide-form'">
-        <base-button @click="changeFormState(false)" button-type="circular">x</base-button>
+    <div class="form-container" >
+        <base-button @click="changeFormState(false)" class="close" button-type="noOutline">x</base-button>
         <h1>{{FormTitle}}</h1>
         <base-card>
-            <base-card>
-                <form>
-                    <slot></slot>
-                </form>
-            </base-card>
+            <form>
+                <slot></slot>
+            </form>
         </base-card>
     </div>
 </template>
@@ -15,7 +13,7 @@
 import { mapActions } from 'vuex';
 
 export default {
-
+    props:['formTitle'],
 
 
     methods: {
@@ -30,24 +28,23 @@ div{
     text-align: left;
 }
 
-.show-form {
-    display: block;
-}
-
-.hide-form {
-    display: none;
-}
 .form-container {
-  z-index: 3;
-  position: fixed;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(255, 255, 255, .9);
+    display: block;
+    z-index: 3;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, .9);
+}
+
+.close {
+    position: absolute;
+    right: 5%;
+    width: 0%;
+    margin: 0px;
 }
 
 
-.form {
 
-}
 </style>

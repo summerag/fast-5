@@ -9,15 +9,22 @@ export default {
 }
 </script>
 <style scoped>
-.base {
+
+button {
     outline: none;
-    border-radius: 8px;
+    text-decoration:none;
     font-size: 25px;
+}
+
+.base {
+    margin: 0 auto;
+    border-radius: 8px;
+    font-size: 16px;
     color:#FFFFFF;
-    background-color:#1761a0;
+    background-color: rgb(147,221,255);
     box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
     padding:0.7em 1.4em;
-    text-decoration:none;
+
 }
 
 .base:hover {
@@ -27,7 +34,6 @@ export default {
 
 
 .circular {
-    font-size: 25px;
     height: 50px;
     width: 50px;
     background-color: rgb(147,221,255);
@@ -44,6 +50,11 @@ export default {
     width: 75px;
     color: rgba(255, 255, 255, 1);
     transform: rotate(90deg);
+}
+
+.noOutline{
+    background-color: transparent;
+    border: none;
 }
 
 </style>
