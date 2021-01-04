@@ -16,8 +16,9 @@
             <base-button button-type="base">Submit</base-button>
         </div>
     </base-form>
-</template>
+</template>import { csv-parse } from 'csv';
 <script>
+import Papa from 'papaparse'
 export default {
     data () {
         return {
@@ -37,9 +38,19 @@ export default {
     },
     methods: {
         submitForm () {
-        var playerFile = document.getElementById('playerFile');
-        if(playerFile.files.length > 0){
-            //do somethin
+        const playerFile = document.getElementById('playerFile');
+        const fileList = playerFile.files;
+        if(fileList.length > 0){
+            //do somethingS
+            const file = fileList[0]
+            if(file.type === "text/csv"){
+                console.log('parsing')
+                Papa.parse(file, {
+                    complete : function(results) {
+                        console.log(results)
+                    }
+                })
+            }
         }
         else {
             //do something
