@@ -10,6 +10,7 @@
         <router-link to="/">Home</router-link>
         <router-link to="/teams">Teams</router-link>
         <router-link to="/players">Players</router-link>
+        <router-link to="/analytics">Analytics</router-link>
         <router-link to="/schedule">Schedule</router-link>
         <router-link to="/login">Log In</router-link>
     </div>

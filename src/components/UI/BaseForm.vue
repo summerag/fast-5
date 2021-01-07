@@ -1,7 +1,7 @@
 <template>
     <div class="form-container" >
         <base-button @click="changeFormState(false)" class="close" button-type="noOutline">x</base-button>
-        <h1>{{FormTitle}}</h1>
+        <h1>{{formTitle}}</h1>
         <base-card>
             <form>
                 <slot></slot>
@@ -29,6 +29,7 @@ div{
 }
 
 .form-container {
+    text-align: center;
     display: block;
     z-index: 3;
     position: fixed;
