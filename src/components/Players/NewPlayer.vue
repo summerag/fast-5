@@ -18,7 +18,7 @@
             <base-button button-type="base">Submit</base-button>
         </div>
     </base-form>
-</template>import { csv-parse } from 'csv';
+</template>
 <script>
 import Papa from 'papaparse'
 export default {
@@ -50,6 +50,7 @@ export default {
             if(this.formIsValid === false || this.playerList.length === 0){
                 return;
             }
+            this.$store.dispatch('players/registerPlayer')
 
         },
 
@@ -85,7 +86,9 @@ export default {
                             if(player.lolname === "" || player.discordtag === ""){
                                 vm.fileError = true
                             }
-                            vm.playerList.push(playerFormat)
+                            else{
+                                vm.playerList.push(playerFormat)
+                            }
                         });
                     }
                 })
@@ -102,7 +105,8 @@ export default {
                 this.player.discordtag.isValid = false;
                 this.formIsValid = false;
             }
-        }
+        },
+
     }
 }
 </script>

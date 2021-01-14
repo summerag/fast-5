@@ -27,7 +27,6 @@ export default {
     data(){
         return {
             isChecked: false,
-            windowWidth: window.innerWidth
         }
     },
 
