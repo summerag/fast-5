@@ -43,7 +43,6 @@ export default {
             catch (error) {
                 this.error = error.message
             }
-            console.log(this.players)
             this.isLoading = false;
         }
     },

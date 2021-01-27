@@ -14,15 +14,4 @@ firebase.initializeApp(firebaseConfig)
 
 const db = firebase.firestore();
 
-//Collection references
-const playerCollection = db.collection('players')
-const teamCollection = db.collection('teams')
-
-
-
-
-export {
-    db,
-    playerCollection,
-    teamCollection
-}
+export { db }

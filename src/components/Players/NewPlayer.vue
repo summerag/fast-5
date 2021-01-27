@@ -34,8 +34,6 @@ export default {
                     isValid: true
                 }
             },
-            playerList: [],
-            fileUpload: false,
             fileError: false,
             formIsValid: true
             
@@ -45,41 +43,40 @@ export default {
         clearValidity(input) {
             this.player[input].isValid = true;
         },
-        submitForm(){
-            this.compileData()
-            if(this.formIsValid === false || this.playerList.length === 0){
-                return;
-            }
-            this.$store.dispatch('players/registerPlayer')
-
-        },
-
-        compileData () {
+        async submitForm(){
             const playerFile = document.getElementById('playerFile');
             const fileList = playerFile.files;
+            let playerList = [];
             if(fileList.length > 0){
-                this.fileUpload = true;
-                this.parseCsv(fileList[0]);
+                playerList = await this.parseCsv(fileList)
                 if(this.fileError === true){
                     alert("One or more players were not uploaded due to missing fields.");
                 }
             }
-            else {
-                this.fileUpload = false;
+            else{
                 this.validateForm()
-                this.playerList.push(this.player);
+                if(this.formIsValid === true){
+                    let playerFormat = {
+                        lolname: this.player.lolname.value,
+                        discordtag: this.player.discordtag.value
+                    }
+                    playerList.push(playerFormat)
+                }
             }
+            this.$store.dispatch('players/registerPlayer', playerList)
+
         },
 
         parseCsv(file) {
-            var vm = this;
+            let vm = this;
+            let playerList = [];
             if(file.type === "text/csv"){
                 Papa.parse(file, {
                     header: true,
                     skipEmptyLines: true,
                     complete : function(results) {
                         results.data.forEach(player => {
-                            var playerFormat = {
+                            let playerFormat = {
                                 lolname: player.lolname,
                                 discordtag: player.discordtag
                             }
@@ -87,13 +84,18 @@ export default {
                                 vm.fileError = true
                             }
                             else{
-                                vm.playerList.push(playerFormat)
+                                playerList.push(playerFormat)
                             }
                         });
+                        return playerList;
                     }
                 })
             }
+            else{
+                alert("Not a valid file type. Please make sure you are uploading a csv file")
+            }
         },
+
         validateForm(){
             this.formIsValid = true
             if(this.player.lolname.value === ''){

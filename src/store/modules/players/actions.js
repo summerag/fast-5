@@ -1,8 +1,11 @@
-import { playerCollection } from '../../../firebaseConfig.js'
+import { db } from '../../../firebaseConfig.js';
+
+const playerCollection = db.collection('players');
+
 
 export default {
     async getPlayers(context) {
-        const players = []
+        const players = [];
         playerCollection.get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -11,9 +14,23 @@ export default {
                     lolName: doc.data().lolname,
                     discordTag: doc.data().discordtag
                 }
-                players.push(player)
+                players.push(player);
             })
-            context.commit('setPlayers', players)
+            context.commit('setPlayers', players);
         })
+    },
+    async registerPlayer(context, payload){
+        let batch = db.batch();
+        console.log(context)
+        payload.forEach((doc) => {
+            let newPlayerRef = playerCollection.doc();
+            batch.set(newPlayerRef, doc)
+        })
+        batch.commit().then(() => {
+            console.log("Document successfully written!");
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
     }
 }
