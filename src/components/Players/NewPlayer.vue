@@ -48,7 +48,7 @@ export default {
             const fileList = playerFile.files;
             let playerList = [];
             if(fileList.length > 0){
-                playerList = await this.parseCsv(fileList)
+                playerList = await this.parseCsv(fileList[0])
                 if(this.fileError === true){
                     alert("One or more players were not uploaded due to missing fields.");
                 }
@@ -63,14 +63,17 @@ export default {
                     playerList.push(playerFormat)
                 }
             }
-            this.$store.dispatch('players/registerPlayer', playerList)
+            if(playerList.length >= 1){
+                 this.$store.dispatch('players/registerPlayer', playerList)
+            }
 
         },
 
         parseCsv(file) {
             let vm = this;
             let playerList = [];
-            if(file.type === "text/csv"){
+            let fileType = this.checkType(file.name)
+            if(fileType){
                 Papa.parse(file, {
                     header: true,
                     skipEmptyLines: true,
@@ -109,13 +112,22 @@ export default {
             }
         },
 
+        checkType(file){
+            let fileType = file.slice(-3)
+            if(fileType === "csv"){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
     }
 }
 </script>
 <style scoped>
 .spaceQuestions {
     margin: 10px;
-    
 }
 .submit {
     text-align: center;
