@@ -4,15 +4,16 @@ const playerCollection = db.collection('players');
 
 
 export default {
+
     async getPlayers(context) {
         const players = [];
-        playerCollection.get()
+        return playerCollection.get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 const player = {
                     id: doc.id,
-                    lolName: doc.data().lolname,
-                    discordTag: doc.data().discordtag
+                    lolname: doc.data().lolname,
+                    discordtag: doc.data().discordtag
                 }
                 players.push(player);
             })
@@ -32,5 +33,6 @@ export default {
         .catch((error) => {
             console.error("Error writing document: ", error);
         });
+        context.dispatch('changeFormState', false, {root: true})
     }
 }

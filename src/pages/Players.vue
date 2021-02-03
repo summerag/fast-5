@@ -2,14 +2,12 @@
     <div>
         <h1>Players</h1>
         <base-button @click="changeFormState(true)" button-type="circular">+</base-button>
-        <new-player v-if="formStatus"></new-player>
+        <new-player @submit="loadPlayers" v-if="formStatus"></new-player>
         <div v-if="isLoading">
             <base-spinner></base-spinner>
         </div>
         <div v-else-if="!isLoading">
-            <base-card v-for="player in players" :key="player.id">
-                <h1>{{ player.lolName }}</h1>
-            </base-card>
+            <player-item v-for="player in players" :key="player.id" :id="player.id" :lolname="player.lolname" :discordtag="player.discordtag" ></player-item>
         </div>
 
     </div>
@@ -19,14 +17,16 @@ import { mapActions, mapGetters } from 'vuex'
 
 
 import NewPlayer from '../components/Players/NewPlayer.vue'
+import PlayerItem from '../components/Players/PlayerItem.vue'
+import BaseSpinner from '../components/UI/BaseSpinner.vue'
 export default {
     data () {
         return {
            error: null,
-           isLoading: false,
+           isLoading: true,
         }
     },
-    components: {NewPlayer},
+    components: {NewPlayer, PlayerItem, BaseSpinner},
     created(){
         this.loadPlayers();
     },
@@ -39,10 +39,12 @@ export default {
             this.isLoading = true;
             try {
                 await this.getPlayers()
+
             }
             catch (error) {
                 this.error = error.message
             }
+            console.log("setting to false")
             this.isLoading = false;
         }
     },
@@ -50,7 +52,8 @@ export default {
         ...mapGetters({
             formStatus: 'formStatus',
             players: 'players/players'
-        })
+        }),
+
     }
 }
 </script>

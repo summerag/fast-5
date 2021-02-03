@@ -21,59 +21,67 @@
 </template>
 <script>
 import Papa from 'papaparse'
+
 export default {
-    data () {
-        return {
-            player:{
-                lolname: {
-                    value: '',
-                    isValid: true
-                },
-                discordtag: {
-                    value:'',
-                    isValid: true
-                }
+emits: ['submit'],
+data () {
+    return {
+        player:{
+            lolname: {
+                value: '',
+                isValid: true
             },
-            fileError: false,
-            formIsValid: true
-            
-        }
+            discordtag: {
+                value:'',
+                isValid: true
+            }
+        },
+        fileError: false,
+        formIsValid: true
+        
+    }
+},
+methods: {
+    clearValidity(input) {
+        this.player[input].isValid = true;
     },
-    methods: {
-        clearValidity(input) {
-            this.player[input].isValid = true;
-        },
-        async submitForm(){
-            const playerFile = document.getElementById('playerFile');
-            const fileList = playerFile.files;
-            let playerList = [];
-            if(fileList.length > 0){
-                playerList = await this.parseCsv(fileList[0])
-                if(this.fileError === true){
-                    alert("One or more players were not uploaded due to missing fields.");
+    async submitForm(){
+        const playerFile = document.getElementById('playerFile');
+        const fileList = playerFile.files;
+        let playerList = [];
+        if(fileList.length > 0){
+            playerList = await this.parseCsv(fileList[0])
+            console.log(playerList)
+            if(this.fileError === true){
+                alert("One or more players were not uploaded due to missing fields.");
+            }
+        }
+        else{
+            this.validateForm()
+            if(this.formIsValid === true){
+                let playerFormat = {
+                    lolname: this.player.lolname.value,
+                    discordtag: this.player.discordtag.value
                 }
+                playerList.push(playerFormat)
             }
-            else{
-                this.validateForm()
-                if(this.formIsValid === true){
-                    let playerFormat = {
-                        lolname: this.player.lolname.value,
-                        discordtag: this.player.discordtag.value
-                    }
-                    playerList.push(playerFormat)
-                }
-            }
-            if(playerList.length >= 1){
-                 this.$store.dispatch('players/registerPlayer', playerList)
-            }
+        }
+        if( playerList.length >= 1 ){
+                this.$store.dispatch('players/registerPlayer', playerList)
+                this.$emit('submit')
+        }
+        else{
+            alert("No player info entered.")
+        }
 
-        },
+    },
 
-        parseCsv(file) {
-            let vm = this;
-            let playerList = [];
-            let fileType = this.checkType(file.name)
-            if(fileType){
+    parseCsv(file) {
+        let vm = this;
+        let playerList = [];
+        let fileType = this.checkType(file.name)
+        if(fileType){
+            return new Promise((resolve) => {
                 Papa.parse(file, {
                     header: true,
                     skipEmptyLines: true,
@@ -87,42 +95,47 @@ export default {
                                 vm.fileError = true
                             }
                             else{
+                                console.log(playerFormat)
                                 playerList.push(playerFormat)
                             }
                         });
-                        return playerList;
+
+                        resolve(playerList)
                     }
                 })
-            }
-            else{
-                alert("Not a valid file type. Please make sure you are uploading a csv file")
-            }
-        },
+            })
 
-        validateForm(){
-            this.formIsValid = true
-            if(this.player.lolname.value === ''){
-                this.player.lolname.isValid = false;
-                this.formIsValid = false;
-
-            }
-            if(this.player.discordtag.value === ''){
-                this.player.discordtag.isValid = false;
-                this.formIsValid = false;
-            }
-        },
-
-        checkType(file){
-            let fileType = file.slice(-3)
-            if(fileType === "csv"){
-                return true;
-            }
-            else{
-                return false;
-            }
         }
+        else{
+            alert("Not a valid file type. Please make sure you are uploading a csv file")
+            return []
+        }
+    },
 
+    validateForm(){
+        this.formIsValid = true
+        if(this.player.lolname.value === ''){
+            this.player.lolname.isValid = false;
+            this.formIsValid = false;
+
+        }
+        if(this.player.discordtag.value === ''){
+            this.player.discordtag.isValid = false;
+            this.formIsValid = false;
+        }
+    },
+
+    checkType(file){
+        let fileType = file.slice(-3)
+        if(fileType === "csv"){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
+
+}
 }
 </script>
 <style scoped>
